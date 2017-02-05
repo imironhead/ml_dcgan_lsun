@@ -2,6 +2,8 @@
 """
 import lmdb
 import numpy
+import os
+import pickle
 import scipy.misc
 import StringIO
 
@@ -9,16 +11,43 @@ import StringIO
 class Lsun(object):
     """
     """
+    @staticmethod
+    def load_keys(path_lsun_dir):
+        """
+        """
+        path_keys = os.path.join(path_lsun_dir, 'keys.pkl')
+
+        if os.path.isfile(path_keys):
+            with open(path_keys, 'r') as kf:
+                return pickle.Unpickler(kf).load()
+
+        print 'generating keys of lmdb: ' + path_lsun_dir
+
+        keys = []
+
+        with lmdb.open(path_lsun_dir) as env:
+            with env.begin(write=False) as txn:
+                with txn.cursor() as cursor:
+                    keys_iter = cursor.iternext_nodup(keys=True, values=False)
+
+                    keys_count = env.stat()['entries']
+
+                    for idx, key in enumerate(keys_iter):
+                        keys.append(key)
+
+                        if idx % 1000 == 0:
+                            print 'found keys: {} / {}'.format(idx, keys_count)
+
+        with open(path_keys, 'w') as kf:
+            pickle.Pickler(kf).dump(keys)
+
+        return keys
+
     def __init__(self, path_lsun_dir):
         """
         """
         self._lmdb_path = path_lsun_dir
-        self._lmdb_keys = []
-
-        with lmdb.open(self._lmdb_path) as env:
-            with env.begin(write=False) as txn:
-                with txn.cursor() as cursor:
-                    self._lmdb_keys = [k for k, v in cursor]
+        self._lmdb_keys = Lsun.load_keys(path_lsun_dir)
 
         self._key_indice = numpy.arange(len(self._lmdb_keys))
         self._key_position = 0
