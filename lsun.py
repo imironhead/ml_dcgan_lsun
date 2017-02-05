@@ -58,6 +58,8 @@ class Lsun(object):
                         img /= 127.5
                         img -= 1.0
 
+                        img = scipy.misc.imresize(img, 25)
+
                         images.append(img)
 
         return images

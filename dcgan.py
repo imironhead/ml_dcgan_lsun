@@ -35,16 +35,16 @@ def next_real_batch(params):
     raw_batch = data.next_batch(discriminator_batch_size)
 
     # crop to 256 x 256 x 3 and copy to numpy array
-    discriminator_batch = np.zeros((discriminator_batch_size, 256, 256, 3))
+    discriminator_batch = np.zeros((discriminator_batch_size, 64, 64, 3))
 
     for i in xrange(len(raw_batch)):
         image = raw_batch[i]
 
         w, h = image.shape[:2]
 
-        x, y = (w / 2) - 128, (h / 2) - 128
+        x, y = (w / 2) - 32, (h / 2) - 32
 
-        discriminator_batch[i] = image[x:x + 256, y:y + 256, :]
+        discriminator_batch[i] = image[x:x + 64, y:y + 64, :]
 
     return discriminator_batch
 
@@ -125,8 +125,8 @@ if __name__ == '__main__':
     params['path_dir_lsun'] = sys.argv[1]
     params['path_dir_results'] = './results/'
     params['training_iterations'] = 10000
-    params['discriminator_batch_size'] = 32
-    params['generator_batch_size'] = 32
+    params['discriminator_batch_size'] = 64
+    params['generator_batch_size'] = 64
     params['generator_seed_size'] = 64
     params['results_image_x_count'] = 2
     params['results_image_y_count'] = 2

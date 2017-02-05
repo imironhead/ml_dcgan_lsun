@@ -39,9 +39,9 @@ class Dcgan(object):
             # in discriminator, use LeakyReLU
             source = tf.contrib.layers.convolution2d(
                 inputs=source,
-                num_outputs=2 ** (7 + layer_idx),
-                kernel_size=[4, 4],
-                stride=[2, 2],
+                num_outputs=2 ** (5 + layer_idx),
+                kernel_size=4,
+                stride=2,
                 padding='SAME',
                 activation_fn=Dcgan.leaky_relu,
                 normalizer_fn=normalizer_fn,
@@ -74,18 +74,18 @@ class Dcgan(object):
         # convolutional net.
         target = tf.contrib.layers.fully_connected(
             inputs=seed,
-            num_outputs=4 * 4 * 1024,
+            num_outputs=4 * 4 * 256,
             activation_fn=tf.nn.relu,
             normalizer_fn=tf.contrib.layers.batch_norm,
             weights_initializer=weights_initializer,
             scope='g_project')
 
         # reshape to images
-        target = tf.reshape(target, [-1, 4, 4, 1024])
+        target = tf.reshape(target, [-1, 4, 4, 256])
 
         # transpose convolution to upscale
-        for layer_idx in xrange(6):
-            if layer_idx == 5:
+        for layer_idx in xrange(4):
+            if layer_idx == 3:
                 num_outputs = 3
 
                 # arXiv:1511.06434v2
@@ -96,7 +96,7 @@ class Dcgan(object):
                 # use batch norm except the output layer
                 normalizer_fn = None
             else:
-                num_outputs = 2 ** (9 - layer_idx)
+                num_outputs = 2 ** (7 - layer_idx)
 
                 # arXiv:1511.06434v2
                 # use ReLU
@@ -130,7 +130,7 @@ class Dcgan(object):
             shape=[None, generator_seed_size], dtype=tf.float32)
 
         # the input batch placeholder (eal data) for the discriminator.
-        self._real = tf.placeholder(shape=[None, 256, 256, 3], dtype=tf.float32)
+        self._real = tf.placeholder(shape=[None, 64, 64, 3], dtype=tf.float32)
 
         # build the generator to generate images from random seeds.
         self._generate_fake = Dcgan.generator(self._seed)
@@ -162,9 +162,9 @@ class Dcgan(object):
 
         # minimize the loss to train the generator and discriminator.
         gradients_generator = trainer_generator.compute_gradients(
-            self._loss_generator, trainable_variables[:14])
+            self._loss_generator, trainable_variables[:10])
         gradients_discriminator = trainer_discriminator.compute_gradients(
-            self._loss_discriminator, trainable_variables[14:])
+            self._loss_discriminator, trainable_variables[10:])
 
         self._train_generator = trainer_generator.apply_gradients(
             gradients_generator)
