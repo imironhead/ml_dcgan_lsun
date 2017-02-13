@@ -82,12 +82,12 @@ class Lsun(object):
 
                         sio = StringIO.StringIO(val)
 
-                        img = scipy.misc.imread(sio).astype(numpy.float32)
+                        img = scipy.misc.imread(sio)
+                        img = scipy.misc.imresize(img, 25)
+                        img = img.astype(numpy.float32)
 
                         img /= 127.5
                         img -= 1.0
-
-                        img = scipy.misc.imresize(img, 25)
 
                         images.append(img)
 
