@@ -39,7 +39,7 @@ class Dcgan(object):
             # in discriminator, use LeakyReLU
             source = tf.contrib.layers.convolution2d(
                 inputs=source,
-                num_outputs=2 ** (5 + layer_idx),
+                num_outputs=2 ** (7 + layer_idx),
                 kernel_size=4,
                 stride=2,
                 padding='SAME',
@@ -74,14 +74,14 @@ class Dcgan(object):
         # convolutional net.
         target = tf.contrib.layers.fully_connected(
             inputs=seed,
-            num_outputs=4 * 4 * 64,
+            num_outputs=4 * 4 * 1024,
             activation_fn=tf.nn.relu,
             normalizer_fn=tf.contrib.layers.batch_norm,
             weights_initializer=weights_initializer,
             scope='g_project')
 
         # reshape to images
-        target = tf.reshape(target, [-1, 4, 4, 64])
+        target = tf.reshape(target, [-1, 4, 4, 1024])
 
         # transpose convolution to upscale
         for layer_idx in xrange(4):
@@ -96,7 +96,7 @@ class Dcgan(object):
                 # use batch norm except the output layer
                 normalizer_fn = None
             else:
-                num_outputs = 2 ** (5 - layer_idx)
+                num_outputs = 2 ** (9 - layer_idx)
 
                 # arXiv:1511.06434v2
                 # use ReLU

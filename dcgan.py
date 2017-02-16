@@ -110,7 +110,7 @@ def train(params):
         print 'iteration: {}'.format(iteration)
 
         # peek the generator.
-        if iteration % 10 == 0:
+        if iteration % 200 == 0:
             fake_results = dcgan.generate(fixed_fake_sources)
 
             path_dir_results = params.get('path_dir_results', './results/')
@@ -127,9 +127,9 @@ if __name__ == '__main__':
     params['path_dir_lsun'] = sys.argv[1]
     params['path_dir_results'] = './results/'
     params['training_iterations'] = 20000000
-    params['discriminator_batch_size'] = 64
-    params['generator_batch_size'] = 64
-    params['generator_seed_size'] = 64
+    params['discriminator_batch_size'] = 128
+    params['generator_batch_size'] = 128
+    params['generator_seed_size'] = 100
     params['results_image_x_count'] = 4
     params['results_image_y_count'] = 4
 
