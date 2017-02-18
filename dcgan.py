@@ -105,7 +105,6 @@ def train(params):
 
         dcgan.train_discriminator(fake_sources, real_sources)
         dcgan.train_generator(fake_sources)
-        dcgan.train_generator(fake_sources)
 
         print 'iteration: {}'.format(iteration)
 
