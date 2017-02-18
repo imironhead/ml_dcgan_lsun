@@ -121,7 +121,7 @@ def train(params):
             path_dir_results = params.get('path_dir_results', './results/')
 
             path_results = os.path.join(
-                path_dir_results, 'training_{}.png'.format(iteration))
+                path_dir_results, 'training_{:08}.png'.format(iteration))
 
             save_merged_results(params, fake_results, path_results)
 
