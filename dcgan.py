@@ -109,8 +109,13 @@ def train(params):
 
         print 'iteration: {}'.format(iteration)
 
+        if iteration % 100 == 0:
+            dcgan.save_checkpoint()
+
         # peek the generator.
-        if iteration % 200 == 0:
+        if iteration % 100 == 0:
+            fixed_fake_sources[:8] = next_fake_batch(params)[:8]
+
             fake_results = dcgan.generate(fixed_fake_sources)
 
             path_dir_results = params.get('path_dir_results', './results/')
