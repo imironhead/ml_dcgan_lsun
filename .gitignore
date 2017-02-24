@@ -91,3 +91,5 @@ ENV/
 # training data and results
 data/
 results/
+checkpoints/
+tensorboard/

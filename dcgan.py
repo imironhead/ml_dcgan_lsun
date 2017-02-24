@@ -105,18 +105,22 @@ def train(params):
 
         dcgan.train_discriminator(fake_sources, real_sources)
         dcgan.train_generator(fake_sources)
-        dcgan.train_generator(fake_sources)
 
         print 'iteration: {}'.format(iteration)
 
+        if iteration % 100 == 0:
+            dcgan.save_checkpoint()
+
         # peek the generator.
-        if iteration % 200 == 0:
+        if iteration % 100 == 0:
+            fixed_fake_sources[:8] = next_fake_batch(params)[:8]
+
             fake_results = dcgan.generate(fixed_fake_sources)
 
             path_dir_results = params.get('path_dir_results', './results/')
 
             path_results = os.path.join(
-                path_dir_results, 'training_{}.png'.format(iteration))
+                path_dir_results, 'training_{:08}.png'.format(iteration))
 
             save_merged_results(params, fake_results, path_results)
 
