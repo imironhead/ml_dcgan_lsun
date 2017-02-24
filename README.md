@@ -8,6 +8,8 @@ In commit 62191804822c5f42456a7075f3db8368b98c4381, the progress looks promising
 
 ![generator loss](/assets/generator_11500.png)
 
+![nan](/assets/nan_11980.png)
+
 ---
 
 In commit 8cb54369787640881b4f32ca7556289f58bd987a, got **NaN** after 18900 batches:
