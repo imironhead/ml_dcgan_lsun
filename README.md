@@ -1,4 +1,4 @@
-# DCGAN on bedromms dataset of LSUN
+# DCGAN on Bedroom dataset of LSUN
 
 In commit 62191804822c5f42456a7075f3db8368b98c4381, the progress looks promising. There are actually no changes. Sometimes the model encounters **"NaN"** (not a number) errors with unknown reasons. I rolled back some steps to bypass that issue. There was an accident so the older records in the chart is lost.
 
