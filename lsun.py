@@ -10,10 +10,15 @@ import StringIO
 
 class Lsun(object):
     """
+    A utility to read LSUN data set.
+
+    http://lsun.cs.princeton.edu/2016/
     """
     @staticmethod
     def load_keys(path_lsun_dir):
         """
+        Load keys from a pickle file. All key of the database will be dumped
+        into a pickle file if there is none.
         """
         path_keys = os.path.join(path_lsun_dir, 'keys.pkl')
 
@@ -56,6 +61,9 @@ class Lsun(object):
 
     def next_batch(self, batch_size):
         """
+        Get next batch_size images from the database.
+        All images are resized to 25% (either 64x? or ?x64).
+        All pixels are remapped to range between -1.0 ~ +1.0.
         """
         begin = self._key_position
 

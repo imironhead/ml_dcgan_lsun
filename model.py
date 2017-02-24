@@ -20,7 +20,7 @@ class Dcgan(object):
     def discriminator(source, reuse):
         """
         build the discriminator network.
-        param 'source' is the input data in shape [-1, 256, 256, 3].
+        param 'source' is the input data in shape [-1, 64, 64, 3].
         param 'resue' is for sharing the network with generator.
         """
         weights_initializer = tf.truncated_normal_initializer(stddev=0.02)
@@ -137,7 +137,7 @@ class Dcgan(object):
         self._seed = tf.placeholder(
             shape=[None, generator_seed_size], dtype=tf.float32)
 
-        # the input batch placeholder (eal data) for the discriminator.
+        # the input batch placeholder (real data) for the discriminator.
         self._real = tf.placeholder(shape=[None, 64, 64, 3], dtype=tf.float32)
 
         # build the generator to generate images from random seeds.

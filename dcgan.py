@@ -19,8 +19,8 @@ def make_dir(dir_path):
 
 def next_real_batch(params):
     """
-    Get next batch from MINST. A bunch of 32x32 mono channel images as Numpy
-    arrays. Shape of the batched data is [batch_size, 32, 32, 1].
+    Get next batch from LSUN. A bunch of RGB images. The images are resized to
+    [batch_size, 64, 64, 3].
     """
     if 'lsun' not in params:
         # lazy loading.
@@ -34,7 +34,7 @@ def next_real_batch(params):
 
     raw_batch = data.next_batch(discriminator_batch_size)
 
-    # crop to 256 x 256 x 3 and copy to numpy array
+    # crop to 64 x 64 x 3 and copy to numpy array
     discriminator_batch = np.zeros((discriminator_batch_size, 64, 64, 3))
 
     for i in xrange(len(raw_batch)):
