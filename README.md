@@ -4,6 +4,8 @@ In commit 62191804822c5f42456a7075f3db8368b98c4381, the progress looks promising
 
 ![result after 11500 batches](/assets/batch_11500.png)
 
+![interpolation](/assets/interpolation.png)
+
 ![discriminator loss](/assets/discriminator_11500.png)
 
 ![generator loss](/assets/generator_11500.png)
