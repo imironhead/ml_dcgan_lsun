@@ -4,6 +4,7 @@ import numpy as np
 import os
 import scipy.misc
 import sys
+import time
 
 from lsun import Lsun
 from model import Dcgan
@@ -125,18 +126,47 @@ def train(params):
             save_merged_results(params, fake_results, path_results)
 
 
+def generate(params):
+    """
+    32 x 8 images
+    """
+    name_results = 'generate_{}.png'.format(time.strftime('%Y%m%d_%H%M%S'))
+    path_results = os.path.join(params['path_dir_results'], name_results)
+
+    head, diff = next_fake_batch(params)[:2]
+    diff /= 256.0
+
+    seeds = [head + diff * i for i in xrange(256)]
+
+    dcgan = Dcgan(params)
+
+    results = dcgan.generate(seeds)
+
+    save_merged_results(params, results, path_results)
+
+
 if __name__ == '__main__':
     # training parameters
     params = {}
-    params['path_dir_lsun'] = sys.argv[1]
     params['path_dir_results'] = './results/'
     params['training_iterations'] = 20000000
     params['discriminator_batch_size'] = 128
     params['generator_batch_size'] = 128
     params['generator_seed_size'] = 100
-    params['results_image_x_count'] = 4
-    params['results_image_y_count'] = 4
 
     make_dir(params['path_dir_results'])
 
-    train(params)
+    if len(sys.argv) < 2:
+        raise Exception('give me parameters')
+
+    if sys.argv[1] == 'g':
+        params['results_image_x_count'] = 32
+        params['results_image_y_count'] = 8
+
+        generate(params)
+    else:
+        params['path_dir_lsun'] = sys.argv[1]
+        params['results_image_x_count'] = 4
+        params['results_image_y_count'] = 4
+
+        train(params)
