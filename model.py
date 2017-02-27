@@ -195,11 +195,11 @@ class Dcgan(object):
             [1, 64, 64, 3],
             initializer=tf.constant_initializer([1.0, -1.0]))
 
-        if self._checkpoint_source_path is not None:
-            saver = tf.train.Saver()
-            saver.restore(self._session, self._checkpoint_source_path)
-        else:
+        if self._checkpoint_source_path is None:
             self._session.run(tf.global_variables_initializer())
+        else:
+            tf.train.Saver().restore(
+                self._session, self._checkpoint_source_path)
 
         self._summary_g = \
             tf.summary.scalar('generator loss', self._loss_generator)
