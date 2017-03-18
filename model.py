@@ -208,7 +208,7 @@ class Dcgan(object):
 
         # concat the dummy variable to force image summary to map pixel values
         # from [-1.0, +1.0] to [0, 255]
-        temp = tf.concat(0, [self._generate_fake, dummy])
+        temp = tf.concat([self._generate_fake, dummy], 0)
 
         self._summary_image = tf.summary.image(
             'generated image', temp, max_outputs=18)
